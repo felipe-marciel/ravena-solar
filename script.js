@@ -1,5 +1,6 @@
 const campoConta = document.querySelector('#foto-conta');
 const nomeArquivo = document.querySelector('#nome-arquivo');
+const formulario = document.querySelector('#simulation-form');
 
 if (campoConta && nomeArquivo) {
   campoConta.addEventListener('change', () => {
@@ -9,6 +10,13 @@ if (campoConta && nomeArquivo) {
       : 'Nenhum arquivo selecionado.';
   });
 }
+
+// Arquivos locais não podem seguir no envio GET; guardamos apenas o nome para a prévia.
+formulario?.addEventListener('submit', () => {
+  const arquivo = campoConta?.files?.[0];
+  if (arquivo) sessionStorage.setItem('ravena-arquivo-conta', arquivo.name);
+  else sessionStorage.removeItem('ravena-arquivo-conta');
+});
 
 const valorConta = document.querySelector('#valor-conta');
 const faixaEconomia = document.querySelector('#faixa-economia');

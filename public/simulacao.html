@@ -8,49 +8,20 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=paleta-2026-11">
 <style>
-.preview-page{min-height:100vh;background:linear-gradient(120deg,#0d2c42,#155a7a 56%,#1d8f7e);padding:46px 0}.preview-wrap{width:min(680px,calc(100% - 32px));margin:auto}.preview-brand{display:flex;justify-content:center;margin-bottom:25px}.preview-brand img{height:48px;filter:brightness(0) invert(1)}.preview-card{background:#fff;border-radius:18px;padding:clamp(22px,5vw,38px);box-shadow:0 20px 60px #061e2b55}.preview-card h1{color:#123a55;font-size:clamp(25px,5vw,32px);line-height:1.25}.preview-card>p{margin:9px 0 22px;color:#6b7a83}.chat{background:#e9f5ea;border-radius:16px 16px 4px 16px;padding:20px;color:#26352e;white-space:pre-line;line-height:1.7;box-shadow:0 5px 16px #123a5512}.chat-label{display:block;color:#1d8f7e;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}.preview-disclaimer{font-size:12px;color:#87949b;margin-top:14px}.preview-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}.preview-actions a{flex:1;text-align:center;min-width:180px}.back-link{display:inline-block;margin-top:20px;color:#fff;text-decoration:underline;font-size:13px}.error{background:#fff4e4;border:1px solid #f6d6aa;padding:16px;border-radius:10px;color:#68491f}
-.sender-number{margin:20px 0 10px;padding:13px 16px;background:#f2f6f8;border-radius:10px;color:#123a55;font-size:14px}.sender-number strong{font-weight:600}
+.preview-page{min-height:100vh;background:linear-gradient(120deg,#8f2018,#c73524 56%,#e36a23);padding:46px 0}.preview-wrap{width:min(680px,calc(100% - 32px));margin:auto}.preview-brand{display:flex;justify-content:center;margin-bottom:25px}.preview-brand img{height:48px;filter:brightness(0) invert(1)}.preview-card{background:#fff;border-radius:18px;padding:clamp(22px,5vw,38px);box-shadow:0 20px 60px #5c211c40}.preview-card h1{color:#76251d;font-size:clamp(25px,5vw,32px);line-height:1.25}.preview-card>p{margin:9px 0 22px;color:#806b5c}.chat{background:#fff1d6;border-radius:16px 16px 4px 16px;padding:20px;color:#49352d;white-space:pre-line;line-height:1.7;box-shadow:0 5px 16px #76251d12}.chat-label{display:block;color:#e36a23;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}.preview-disclaimer{font-size:12px;color:#8a7769;margin-top:14px}.preview-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}.preview-actions a{flex:1;text-align:center;min-width:180px}.back-link{display:inline-block;margin-top:20px;color:#fff;text-decoration:underline;font-size:13px}.error{background:#fff4e4;border:1px solid #f6d6aa;padding:16px;border-radius:10px;color:#68491f}
+.sender-number{margin:20px 0 10px;padding:13px 16px;background:#fffaf0;border-radius:10px;color:#76251d;font-size:14px}.sender-number strong{font-weight:600}
 </style>
 </head>
 <body class="preview-page">
 <main class="preview-wrap">
-  <a class="preview-brand" href="index.html" aria-label="Ravena Solar, início"><img src="logo.png" alt="Ravena Solar"></a>
+  <a class="preview-brand" href="index.html" aria-label="Ravena Solar, início"><img src="logo.svg" alt="Ravena Solar"></a>
   <section class="preview-card" aria-labelledby="titulo">
-    <h1 id="titulo">Prévia da sua solicitação</h1>
-    <p>Veja como sua mensagem chegaria para a equipe da Ravena Solar pelo WhatsApp.</p>
-    <p id="numero-remetente" class="sender-number" hidden></p>
-    <div id="mensagem" class="chat" aria-live="polite"></div>
-    <p class="preview-disclaimer">Esta é apenas uma simulação visual. Nenhuma mensagem foi enviada e o anexo selecionado não é transferido nesta demonstração.</p>
-    <div class="preview-actions"><a class="btn btn-blue" href="index.html#simulacao">Voltar ao formulário</a></div>
+    <h1 id="titulo">Solicitação recebida</h1>
+    <p>Seus dados foram registrados. A equipe da Ravena Solar pode entrar em contato pelo WhatsApp informado.</p>
+    <div class="preview-actions"><a class="btn btn-blue" href="index.html#simulacao">Voltar ao site</a></div>
   </section>
   <a class="back-link" href="index.html">Voltar para o site da Ravena Solar</a>
 </main>
-<script>
-const dados = new URLSearchParams(window.location.search);
-const mensagem = document.querySelector('#mensagem');
-const numeroRemetente = document.querySelector('#numero-remetente');
-const nome = (dados.get('nome') || '').trim();
-const whatsapp = (dados.get('whatsapp') || '').trim();
-const cidade = (dados.get('cidade') || '').trim();
-const conta = Number(dados.get('conta'));
-const autorizado = dados.get('contato_autorizado') === 'sim';
-const reais = new Intl.NumberFormat('pt-BR', {style:'currency', currency:'BRL', maximumFractionDigits:0});
-if (!nome || !whatsapp || !cidade || !Number.isFinite(conta) || conta <= 0 || !autorizado) {
-  mensagem.className = 'error';
-  mensagem.textContent = 'Não encontramos todos os dados da solicitação. Volte ao formulário e preencha os campos obrigatórios.';
-} else {
-  const arquivo = sessionStorage.getItem('ravena-arquivo-conta');
-  const economiaMinima = conta * 0.75;
-  const economiaMaxima = conta * 0.90;
-  const contaMinima = conta * 0.10;
-  const contaMaxima = conta * 0.25;
-  numeroRemetente.hidden = false;
-  numeroRemetente.textContent = `Número que enviou a mensagem: ${whatsapp}`;
-  mensagem.textContent = `Olá, Ravena Solar! Quero receber uma simulação de energia solar.\n\n*Meus dados*\nNome: ${nome}\nCidade: ${cidade}\nConta de luz média: ${reais.format(conta)} por mês\n\n*Estimativa inicial*\nEconomia mensal estimada: ${reais.format(economiaMinima)} a ${reais.format(economiaMaxima)}\nConta após a economia: ${reais.format(contaMinima)} a ${reais.format(contaMaxima)} por mês\n\n${arquivo ? `Anexo selecionado: ${arquivo} (não enviado nesta demonstração).` : 'Não anexei a conta de luz.'}`;
-  sessionStorage.removeItem('ravena-arquivo-conta');
-}
-</script>
-</body>
-</html>
+</body></html>

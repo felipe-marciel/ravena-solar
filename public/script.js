@@ -11,13 +11,6 @@ if (campoConta && nomeArquivo) {
   });
 }
 
-// Arquivos locais não podem seguir no envio GET; guardamos apenas o nome para a prévia.
-formulario?.addEventListener('submit', () => {
-  const arquivo = campoConta?.files?.[0];
-  if (arquivo) sessionStorage.setItem('ravena-arquivo-conta', arquivo.name);
-  else sessionStorage.removeItem('ravena-arquivo-conta');
-});
-
 const valorConta = document.querySelector('#valor-conta');
 const faixaEconomia = document.querySelector('#faixa-economia');
 const contaEstimada = document.querySelector('#conta-estimada');
@@ -47,3 +40,34 @@ function atualizarEstimativa() {
 }
 
 valorConta?.addEventListener('input', atualizarEstimativa);
+
+const radiacaoSolar = document.querySelector('#solar-radiation-value');
+
+if (radiacaoSolar) {
+  const parametros = new URLSearchParams(window.location.search);
+  const modoTeste = parametros.get('solar_test');
+  const consulta = modoTeste && ['delay', 'error'].includes(modoTeste)
+    ? `/api/solar?test=${modoTeste}`
+    : '/api/solar';
+
+  fetch(consulta)
+    .then((response) => {
+      if (!response.ok) throw new Error('Falha ao consultar a previsão');
+      return response.json();
+    })
+    .then((previsao) => {
+      const horas = previsao.hourly?.time;
+      const valores = previsao.hourly?.shortwave_radiation;
+      const unidade = previsao.hourly_units?.shortwave_radiation || 'W/m²';
+      const agora = Date.now();
+      const indice = horas?.findIndex((hora) => new Date(hora).getTime() >= agora) ?? -1;
+      const valor = indice >= 0 ? valores?.[indice] : null;
+
+      radiacaoSolar.textContent = Number.isFinite(valor)
+        ? `${new Intl.NumberFormat('pt-BR').format(valor)} ${unidade} na próxima hora`
+        : 'Previsão indisponível no momento';
+    })
+    .catch(() => {
+      radiacaoSolar.textContent = 'Previsão indisponível no momento';
+    });
+}

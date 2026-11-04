@@ -4,3 +4,9 @@ out/
 npm-debug.log*
 .playwright-mcp/
 captura-simulacao*.png
+
+# Variáveis de ambiente locais; mantenha apenas o modelo sem segredos.
+.env*
+!.env.example
+supabase/.temp/
+.vercel
